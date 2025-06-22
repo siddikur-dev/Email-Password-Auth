@@ -158,7 +158,13 @@ const Login = () => {
           Register
         </Link>
       </p>
-      {/* {errorMessage&&} */}
+      {errorMessage && // SweetAlert2
+        Swal.fire({
+          icon: "error",
+          title: "error man ",
+          showConfirmButton: false,
+          timer: 1500,
+        })}
     </div>
   );
 };

@@ -1,4 +1,9 @@
-import { createUserWithEmailAndPassword, sendEmailVerification, signInWithPopup } from "firebase/auth";
+import {
+  createUserWithEmailAndPassword,
+  sendEmailVerification,
+  signInWithPopup,
+  updateProfile,
+} from "firebase/auth";
 import React, { useState } from "react";
 import { auth, provider } from "../Authentication/firebase.init";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
@@ -7,16 +12,16 @@ import { Link, NavLink } from "react-router";
 
 const Register = () => {
   const [errorMessage, setErrorMessage] = useState("");
-  // const [success, setSuccess] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
 
   const handleRegister = (e) => {
     e.preventDefault();
+    const name = e.target.name.value;
+    const photo = e.target.photo.value;
     const email = e.target.email.value;
     const password = e.target.password.value;
 
     setErrorMessage("");
-    // setSuccess(false);
 
     // Password validation
     const lengthRegex = /^.{6,}$/;
@@ -24,15 +29,30 @@ const Register = () => {
     const specialCharRegex = /[!@#$%^&*(),.?":{}|<>]/;
 
     if (!uppercaseRegex.test(password)) {
-      setErrorMessage("at least one uppercase");
+      Swal.fire({
+        icon: "warning",
+        title: "password at least one uppercase",
+        showConfirmButton: false,
+        timer: 1000,
+      });
       return;
     }
     if (!specialCharRegex.test(password)) {
-      setErrorMessage("at least one special charecter");
+      Swal.fire({
+        icon: "warning",
+        title: "password at least one special charecter",
+        showConfirmButton: false,
+        timer: 1000,
+      });
       return;
     }
     if (!lengthRegex.test(password)) {
-      setErrorMessage("Password at least 6 character");
+      Swal.fire({
+        icon: "warning",
+        title: "Password at least 6 character ",
+        showConfirmButton: false,
+        timer: 1000,
+      });
       return;
     }
 
@@ -41,8 +61,7 @@ const Register = () => {
       .then((result) => {
         console.log(result);
         // verification cheack
-        sendEmailVerification(auth.currentUser)
-        .then(()=>{        
+        sendEmailVerification(auth.currentUser).then(() => {
           // SweetAlert2
           Swal.fire({
             icon: "success",
@@ -51,8 +70,21 @@ const Register = () => {
             timer: 5500,
             footer: '<a href="/login">Please Login?</a>',
           });
-        });
 
+          // Update a user's profile
+          const profile = {
+            displayName: name,
+            photoURL: photo,
+          };
+          updateProfile(auth.currentUser, profile)
+            .then(() => {
+              console.log("user updated profile");
+            })
+            .catch((error) => {
+              console.log(error);
+              setErrorMessage(error.message);
+            });
+        });
       })
       .catch((error) => {
         console.log(error);
@@ -80,6 +112,30 @@ const Register = () => {
     <div className="container mx-auto w-full max-w-md p-8 space-y-3 rounded-xl dark:bg-gray-50 dark:text-gray-800">
       <h1 className="text-2xl font-bold text-center">Register</h1>
       <form onSubmit={handleRegister} className="space-y-6">
+        <div className="space-y-1 text-sm">
+          <label htmlFor="email" className="block dark:text-gray-600">
+            Name
+          </label>
+          <input
+            type="text"
+            name="name"
+            id="name"
+            placeholder="Your Name"
+            className="w-full px-4 py-3 rounded-md dark:border-gray-300 dark:bg-gray-50 dark:text-gray-800 focus:dark:border-violet-600"
+          />
+        </div>
+        <div className="space-y-1 text-sm">
+          <label htmlFor="email" className="block dark:text-gray-600">
+            Photo URL
+          </label>
+          <input
+            type="text"
+            name="photo"
+            id="photo"
+            placeholder="Photo URL"
+            className="w-full px-4 py-3 rounded-md dark:border-gray-300 dark:bg-gray-50 dark:text-gray-800 focus:dark:border-violet-600"
+          />
+        </div>
         <div className="space-y-1 text-sm">
           <label htmlFor="email" className="block dark:text-gray-600">
             Email
@@ -122,7 +178,7 @@ const Register = () => {
       <div className="flex items-center pt-4 space-x-1">
         <div className="flex-1 h-px sm:w-16 dark:bg-gray-300"></div>
         <p className="px-3 text-sm dark:text-gray-600">
-          Login with social accounts
+          Register with google accounts
         </p>
         <div className="flex-1 h-px sm:w-16 dark:bg-gray-300"></div>
       </div>
