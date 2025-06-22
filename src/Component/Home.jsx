@@ -19,7 +19,7 @@ const Home = () => {
             href="/login"
             className="border border-white px-6 py-2 rounded hover:bg-white hover:text-violet-600 transition"
           >
-            Login Now
+            Login Now!
           </a>
         </div>
       </div>
