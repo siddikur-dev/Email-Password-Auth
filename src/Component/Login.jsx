@@ -4,7 +4,7 @@ import {
 } from "firebase/auth";
 import React, { use, useRef, useState } from "react";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
 import { auth } from "../Authentication/firebase.init";
 import Swal from "sweetalert2";
 import { AuthContext } from "../Context/AuthContext";
@@ -13,7 +13,7 @@ const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
   // const [errorMessage, setErrorMessage] = useState(false);
   const emailRef = useRef();
-
+  const navigate = useNavigate();
   const { signInUser } = use(AuthContext);
   // handle Login
   const handleLogin = (e) => {
@@ -41,6 +41,7 @@ const Login = () => {
           text: error.message,
         });
       });
+    navigate("/");
   };
   // handle forget password
   const handleForgetPassword = () => {

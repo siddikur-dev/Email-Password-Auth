@@ -1,8 +1,9 @@
 import React, { use } from "react";
 import { AuthContext } from "../Context/AuthContext";
+import { Link } from "react-router";
 
 const ViewProfile = () => {
-  const { user } = use(AuthContext);
+  const { user, singOutUser } = use(AuthContext);
   return (
     <div className="flex flex-col items-center mt-5 space-y-2 ">
       <img
@@ -19,6 +20,13 @@ const ViewProfile = () => {
         Verification: {user.emailVerified ? "✅ Verified" : "❌ Not Verified"}
       </p>
       <p className="text-xl font-bold">Email: {user.email}</p>
+      {user ? (
+        <button onClick={singOutUser} className=" font-bold text-xl btn btn-ghost">
+          Sign Out
+        </button>
+      ) : (
+        <Link to="/login">Login</Link>
+      )}
     </div>
   );
 };

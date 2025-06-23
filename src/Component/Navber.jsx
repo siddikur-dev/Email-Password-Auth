@@ -15,29 +15,13 @@ const Navber = () => {
       >
         Home
       </NavLink>
-      <NavLink
-        to="login"
-        className={({ isActive, isPending }) =>
-          isPending ? "pending" : isActive ? "active text-amber-600" : ""
-        }
-      >
-        Login
-      </NavLink>
-      <NavLink
-        to="register"
-        className={({ isActive, isPending }) =>
-          isPending ? "pending" : isActive ? "active text-amber-600 " : ""
-        }
-      >
-        Register
-      </NavLink>
-
-      {user && (
+      {user ? (
         <>
+          {/* True */}
           <NavLink
             to="/viewProfile"
             className={({ isActive, isPending }) =>
-              isPending ? "pending" : isActive ? "active text-amber-600 " : ""
+              isPending ? "pending" : isActive ? "active text-amber-600" : ""
             }
           >
             Profile
@@ -45,10 +29,31 @@ const Navber = () => {
           <NavLink
             to="/order"
             className={({ isActive, isPending }) =>
-              isPending ? "pending" : isActive ? "active text-amber-600 " : ""
+              isPending ? "pending" : isActive ? "active text-amber-600" : ""
             }
           >
             Order
+          </NavLink>
+        </>
+      ) : (
+        <>
+          {/* False */}
+
+          <NavLink
+            to="login"
+            className={({ isActive, isPending }) =>
+              isPending ? "pending" : isActive ? "active text-amber-600" : ""
+            }
+          >
+            Login
+          </NavLink>
+          <NavLink
+            to="register"
+            className={({ isActive, isPending }) =>
+              isPending ? "pending" : isActive ? "active text-amber-600" : ""
+            }
+          >
+            Register
           </NavLink>
         </>
       )}
