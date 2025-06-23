@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router";
 
 const Home = () => {
   return (
@@ -9,18 +10,18 @@ const Home = () => {
           Register or login using your Email & Password or Google account.
         </p>
         <div className="flex justify-center gap-4 mt-6">
-          <a
-            href="/register"
+          <Link
+            to="/register"
             className="bg-white text-violet-600 font-semibold px-6 py-2 rounded hover:bg-gray-100 transition"
           >
             Register Now
-          </a>
-          <a
-            href="/login"
+          </Link>
+          <Link
+            to="/login"
             className="border border-white px-6 py-2 rounded hover:bg-white hover:text-violet-600 transition"
           >
             Login Now
-          </a>
+          </Link>
         </div>
       </div>
     </div>

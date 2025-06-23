@@ -1,21 +1,71 @@
-import React from "react";
-import { NavLink } from "react-router";
+import { Link, NavLink } from "react-router";
+import { AuthContext } from "../Context/AuthContext";
+import { use } from "react";
 
 const Navber = () => {
+  const { user, singOutUser } = use(AuthContext);
   // Link ShortCut
   const links = (
-    <>
-      <NavLink className="mx-5" to="/">
+    <div className="space-x-5">
+      <NavLink
+        to="/"
+        className={({ isActive, isPending }) =>
+          isPending ? "pending" : isActive ? "active text-amber-600" : ""
+        }
+      >
         Home
       </NavLink>
-      <NavLink className="mx-5" to="login">
+      <NavLink
+        to="login"
+        className={({ isActive, isPending }) =>
+          isPending ? "pending" : isActive ? "active text-amber-600" : ""
+        }
+      >
         Login
       </NavLink>
-      <NavLink className="mx-5" to="register">
+      <NavLink
+        to="register"
+        className={({ isActive, isPending }) =>
+          isPending ? "pending" : isActive ? "active text-amber-600 " : ""
+        }
+      >
         Register
       </NavLink>
-    </>
+
+      {user && (
+        <>
+          <NavLink
+            to="/viewProfile"
+            className={({ isActive, isPending }) =>
+              isPending ? "pending" : isActive ? "active text-amber-600 " : ""
+            }
+          >
+            Profile
+          </NavLink>
+          <NavLink
+            to="/order"
+            className={({ isActive, isPending }) =>
+              isPending ? "pending" : isActive ? "active text-amber-600 " : ""
+            }
+          >
+            Order
+          </NavLink>
+        </>
+      )}
+    </div>
   );
+
+  // AuthProvider from user login or sign out
+
+  const handleSignOut = () => {
+    singOutUser()
+      .then((result) => {
+        console.log(result);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
   return (
     <div>
       <div className="navbar bg-base-100 shadow-sm">
@@ -45,13 +95,37 @@ const Navber = () => {
               {links}
             </ul>
           </div>
-          <a className="btn btn-ghost text-xl">Siddkur Rahman</a>
+          {/* Private Name */}
+          {user && (
+            <p className="btn btn-ghost text-xl hidden md:flex ">
+              {user.displayName}
+            </p>
+          )}
         </div>
         <div className="navbar-center hidden lg:flex">
           <ul className="menu menu-horizontal px-1">{links}</ul>
         </div>
-        <div className="navbar-end">
-          <NavLink to="login" className="btn">Login</NavLink>
+        <div className="navbar-end items-center">
+          <button className="button">
+            {user ? (
+              <>
+                {/* <img
+                  src={user.photoURL}
+                  alt="User"
+                  className="w-10 h-10 rounded-full"
+                  title={user.displayName}
+                /> */}
+                <p
+                  className=" btn btn-ghost cursor-pointer"
+                  onClick={handleSignOut}
+                >
+                  Sign Out
+                </p>
+              </>
+            ) : (
+              <Link to="/login">Login</Link>
+            )}
+          </button>
         </div>
       </div>
     </div>
